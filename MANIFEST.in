@@ -1,0 +1,2 @@
+include templates/*.j2
+recursive-include tempaltes *

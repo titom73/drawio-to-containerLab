@@ -1,15 +1,27 @@
+#!/usr/bin/python
+# coding: utf-8 -*-
+#
+#
+# Copyright 2020 TiTom73
+#
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http: //www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import xmltodict
+import argparse
 import pprint
 from pydantic import BaseModel
 from jinja2 import FileSystemLoader, Environment
-import docker
-from simple_term_menu import TerminalMenu
-
-
-def readxml(file_name):
-    with open(f'data/{file_name}.xml', 'r', encoding='utf-8') as file:
-        my_xml = file.read()
-    return my_xml
+from draw_to_clab import templater
 
 
 class Node(BaseModel):
@@ -20,6 +32,10 @@ class Node(BaseModel):
     parent = ""
     x = ""
 
+def readxml(file_name):
+    with open(f'{file_name}', 'r', encoding='utf-8') as file:
+        my_xml = file.read()
+    return my_xml
 
 def find_value(endpoint):
     return [item.value for item in objects_drawio_in_class_node if item.id == endpoint]
@@ -46,15 +62,26 @@ def moving_x(objects_drawio):
 
 
 if __name__ == '__main__':
-    lab_name = input('Enter your Lab name : ')
-    client = docker.from_env()
-    images_docker_brut = client.images.list()
-    images_docker = [str(item).split("'")[1] for item in images_docker_brut]
-    terminal_menu = TerminalMenu(images_docker)
-    menu_entry_index = terminal_menu.show()
-    lab_image = images_docker[menu_entry_index]
 
-    result = readxml("test-drawio-V7")
+    parser = argparse.ArgumentParser(description="Draw.io to Containerlab converter")
+
+    parser.add_argument('-i', '--input',
+                        help='Draw.io file', type=str)
+
+    parser.add_argument('-o', '--output',
+                        help='Containerlab topology output', type=str)
+
+    parser.add_argument('--eos-version',
+                        help='cEOS image to use', type=str,
+                        default='arista/ceos:4.28.3M')
+
+    parser.add_argument('--lab-name',
+                        help='Name of the lab', type=str,
+                        default='DRAWIO_LAB')
+
+    cli_options = parser.parse_args()
+
+    result = readxml(cli_options.input)
     my_dict = xmltodict.parse(result)
     objects_drawio = my_dict['mxfile']['diagram']['mxGraphModel']['root']['mxCell']
 
@@ -64,14 +91,10 @@ if __name__ == '__main__':
     links = find_link(objects_drawio_in_class_node)
     links_yaml = find_interfaces(links)
 
-    # lab_name = "Lab_test"
-    # lab_image = "arista/ceos:4.29.0.2F"
+    lab_name = cli_options.lab_name
+    lab_image = cli_options.eos_version
 
-    file_loader = FileSystemLoader('templates')
-    env = Environment(loader=file_loader)
-    template = env.get_template('lab_template.txt')
+    output = templater(lab_name=lab_name,lab_image=lab_image,nodes_yaml=nodes_yaml,links_yaml=links_yaml)
 
-    output = template.render(lab_name=lab_name,lab_image=lab_image,nodes_yaml=nodes_yaml,links_yaml=links_yaml)
-
-    with open(f'data/{lab_name}.yml', 'w') as yaml_file:
+    with open(cli_options.output, 'w') as yaml_file:
         yaml_file.write(output)
