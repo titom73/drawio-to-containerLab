@@ -1,0 +1,15 @@
+name: {{lab_name}}
+topology:
+  kinds:
+    ceos:
+      image: {{lab_image}}
+  nodes:
+    {% for node in nodes_yaml -%}
+        {{node}}:
+        kind: ceos
+    {% endfor %}
+
+  links:
+    {% for link in links_yaml -%}
+        - endpoints: {{link}}
+    {% endfor %}

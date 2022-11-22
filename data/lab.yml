@@ -1,33 +1,24 @@
-name: testLab
+name: Lab_test
 topology:
   kinds:
     ceos:
       image: arista/ceos:4.29.0.2F
-  links:
-  - endpoints:
-    - spine1:eth1
-    - leaf1:eth2
-  - endpoints:
-    - spine1:eth2
-    - leaf2:eth1
-  - endpoints:
-    - spine2:eth1
-    - leaf1:eth1
-  - endpoints:
-    - spine2:eth2
-    - leaf2:eth1
-  - endpoints:
-    - leaf1:eth5
-    - leaf2:eth5
-  - endpoints:
-    - leaf1:eth6
-    - leaf2:eth6
   nodes:
-    leaf1:
-      kind: ceos
-    leaf2:
-      kind: ceos
     spine1:
-      kind: ceos
+        kind: ceos
     spine2:
-      kind: ceos
+        kind: ceos
+    leaf1:
+        kind: ceos
+    leaf2:
+        kind: ceos
+    
+
+  links:
+    - endpoints: ['spine1:eth1', 'leaf1:eth2']
+    - endpoints: ['spine1:eth2', 'leaf2:eth2']
+    - endpoints: ['spine2:eth1', 'leaf1:eth1']
+    - endpoints: ['spine2:eth2', 'leaf2:eth1']
+    - endpoints: ['leaf1:eth5', 'leaf2:eth5']
+    - endpoints: ['leaf1:eth6', 'leaf2:eth6']
+    
