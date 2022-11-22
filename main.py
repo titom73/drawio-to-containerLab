@@ -30,7 +30,7 @@ def find_link(objects_drawio):
 def find_interfaces(links):
     links_tempo = []
     for node_id in links:
-        interfaces = [[item.x, item.value] for item in objects_drawio_in_class_node if item.value.find('eth') == 0 and item.parent == node_id[0]]
+        interfaces = [[item.x, item.value] for item in objects_drawio_in_class_node if item.value.lower().find('eth') == 0 and item.parent == node_id[0]]
         links_tempo.append([f"{find_value(node_id[1])[0]}:{interfaces[0][1]}", f"{find_value(node_id[2])[0]}:{interfaces[1][1]}"])
     return links_tempo
 
@@ -44,7 +44,7 @@ def moving_x(objects_drawio):
 
 
 if __name__ == '__main__':
-    result = readxml("test-drawio-V5")
+    result = readxml("test-drawio-V6")
     my_dict = xmltodict.parse(result)
     objects_drawio = my_dict['mxfile']['diagram']['mxGraphModel']['root']['mxCell']
 

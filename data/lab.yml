@@ -12,6 +12,8 @@ topology:
         kind: ceos
     leaf2:
         kind: ceos
+    spine3:
+        kind: ceos
     
 
   links:
@@ -21,4 +23,6 @@ topology:
     - endpoints: ['spine2:eth2', 'leaf2:eth1']
     - endpoints: ['leaf1:eth5', 'leaf2:eth5']
     - endpoints: ['leaf1:eth6', 'leaf2:eth6']
+    - endpoints: ['spine3:Eth1', 'leaf2:eth3']
+    - endpoints: ['spine3:eth2', 'leaf1:eth3']
     
