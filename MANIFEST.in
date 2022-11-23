@@ -1,2 +1,2 @@
-include templates/*.j2
-recursive-include tempaltes *
+include draw_to_clab/templates/*.j2
+recursive-include draw_to_clab/templates *

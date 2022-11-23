@@ -13,7 +13,6 @@ setup(
     install_requires=required,
     # packages=find_packages(),
     packages=find_packages(exclude=['data','ez_setup', 'tests', 'tests.*']),
-    # package_data={'': ['templates/CLAB_TEMPLATE.j2']},
     include_package_data=True,
     url="https://github.com/dwarf-fr/drawio-to-containerLab",
     license="APACHE2",
