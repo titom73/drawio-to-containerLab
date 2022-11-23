@@ -40,6 +40,31 @@ topology:
     - endpoints: ['leaf1:eth6', 'leaf2:eth6']
 ```
 
+## Features
+
+- Generate list of nodes. Only cEOS is supported
+- Generate list of links based on lines between nodes
+- Generate management network definition
+## Script options
+
+```bash
+drawio-to-containerlab -h
+usage: drawio-to-containerlab [-h] [-i INPUT] [-o OUTPUT] [--eos-version EOS_VERSION] [--lab-name LAB_NAME] [--mgmt-net MGMT_NET]
+
+Draw.io to Containerlab converter
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        Draw.io file
+  -o OUTPUT, --output OUTPUT
+                        Containerlab topology output
+  --eos-version EOS_VERSION
+                        cEOS image to use
+  --lab-name LAB_NAME   Name of the lab
+  --mgmt-net MGMT_NET   Subnet for container management
+```
+
 ## Licence
 
 Code under [Apache 2](LICENSE) License
