@@ -7,17 +7,17 @@ import logging
 import jinja2
 
 
-__author__ = "titom73"
+__author__ = "@dwarf-fr"
 __version__ = 0.1
 
 
 def templater(lab_name, lab_image, nodes_yaml, links_yaml, template_file="CLAB_TEMPLATE.j2"):
     # templateLoader = jinja2.FileSystemLoader(searchpath="./templates/")
     template_path = '%s/templates/'% os.path.dirname(__file__)
-    templateLoader = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path),
-                                        autoescape=jinja2.select_autoescape(),
-                                        trim_blocks=True,
-                                        lstrip_blocks=True)
+    templateLoader = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(template_path),
+        autoescape=jinja2.select_autoescape()
+    )
     try:
         template = templateLoader.get_template(template_file)
     except jinja2.TemplateNotFound as error:
