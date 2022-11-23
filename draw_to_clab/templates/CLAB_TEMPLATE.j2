@@ -1,15 +1,21 @@
 name: {{lab_name}}
+
+mgmt:
+  network: 'mgmt-{{lab_name | lower }}'
+  ipv4_subnet: {{ mgmt_net }}
+
 topology:
   kinds:
     ceos:
       image: {{lab_image}}
+
   nodes:
-    {% for node in nodes_yaml -%}
-        {{node}}:
-        kind: ceos
-    {% endfor %}
+{%- for node in nodes_yaml %}
+    {{node}}:
+       kind: ceos
+{%- endfor %}
 
   links:
-    {% for link in links_yaml -%}
-        - endpoints: {{link}}
-    {% endfor %}
+{%- for link in links_yaml %}
+    - endpoints: {{link}}
+{%- endfor -%}

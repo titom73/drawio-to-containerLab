@@ -79,6 +79,10 @@ if __name__ == '__main__':
                         help='Name of the lab', type=str,
                         default='DRAWIO_LAB')
 
+    parser.add_argument('--mgmt-net',
+                        help='Subnet for container management', type=str,
+                        default='192.168.2.0/24')
+
     cli_options = parser.parse_args()
 
     result = readxml(cli_options.input)
@@ -94,7 +98,7 @@ if __name__ == '__main__':
     lab_name = cli_options.lab_name
     lab_image = cli_options.eos_version
 
-    output = templater(lab_name=lab_name,lab_image=lab_image,nodes_yaml=nodes_yaml,links_yaml=links_yaml)
+    output = templater(lab_name=lab_name,lab_image=lab_image,nodes_yaml=nodes_yaml,links_yaml=links_yaml, mgmt_net=cli_options.mgmt_net)
 
     with open(cli_options.output, 'w') as yaml_file:
         yaml_file.write(output)

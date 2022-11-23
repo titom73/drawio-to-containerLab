@@ -11,7 +11,7 @@ __author__ = "@dwarf-fr"
 __version__ = 0.1
 
 
-def templater(lab_name, lab_image, nodes_yaml, links_yaml, template_file="CLAB_TEMPLATE.j2"):
+def templater(lab_name, lab_image, nodes_yaml, links_yaml, mgmt_net, template_file="CLAB_TEMPLATE.j2"):
     # templateLoader = jinja2.FileSystemLoader(searchpath="./templates/")
     template_path = '%s/templates/'% os.path.dirname(__file__)
     templateLoader = jinja2.Environment(
@@ -27,6 +27,7 @@ def templater(lab_name, lab_image, nodes_yaml, links_yaml, template_file="CLAB_T
             lab_name=lab_name,
             lab_image=lab_image,
             nodes_yaml=nodes_yaml,
-            links_yaml=links_yaml
+            links_yaml=links_yaml,
+            mgmt_net=mgmt_net
         )
     return None
